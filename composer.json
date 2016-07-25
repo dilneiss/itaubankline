@@ -9,6 +9,11 @@
         "forum": "https://github.com/dilneiss/itaubankline",
         "source": "https://github.com/dilneiss/itaubankline"
     },
+    "autoload": {
+        "psr-0": {
+            "ItauBankline": "src/"
+        }
+    },
     "require": {
         "php": ">=5.3.2"
     }
