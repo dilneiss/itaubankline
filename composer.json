@@ -1,5 +1,5 @@
 {
-    "name": "itaubankline",
+    "name": "dilneiss/itaubankline",
     "description": "Modulo de integracao com o Itau Bankline para emissao de boletos",
     "type": "library",
     "authors": [
