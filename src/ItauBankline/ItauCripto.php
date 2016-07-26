@@ -163,25 +163,25 @@ class ItauCripto
 		$paramString5 = strtoupper($paramString5);
 
 		if (strlen($paramString1) != $this->TAM_COD_EMP) {
-			return "Erro: tamanho do codigo da empresa diferente de 26 posições.";
+			throw new \Exception("Erro: tamanho do codigo da empresa diferente de 26 posições.");
 		}
 
 		if (strlen($paramString5) != $this->TAM_CHAVE) {
-			return "Erro: tamanho da chave da chave diferente de 16 posições.";
+			throw new \Exception("Erro: tamanho da chave da chave diferente de 16 posições.");
 		}
 
 		if ((strlen($paramString2) < 1) || (strlen($paramString2) > 8)) {
-			return "Erro: número do pedido inválido.";
+			throw new \Exception("Erro: número do pedido inválido.");
 		}
 
 		if (is_numeric($paramString2)) {
 			$paramString2 = $this->PreencheZero($paramString2, 8);
 		} else {
-			return "Erro: numero do pedido não é numérico.";
+			throw new \Exception("Erro: numero do pedido não é numérico.");
 		}
 
 		if ((strlen($paramString3) < 1) || (strlen($paramString3) > 11)) {
-			return "Erro: valor da compra inválido.";
+			throw new \Exception("Erro: valor da compra inválido.");
 		}
 
 		$i = strpos($paramString3, ',');
@@ -190,21 +190,21 @@ class ItauCripto
 			$str3 = substr($paramString3, ($i + 1));
 
 			if (!is_numeric($str3)) {
-				return "Erro: valor decimal não é numérico.";
+				throw new \Exception("Erro: valor decimal não é numérico.");
 			}
 
 			if (strlen($str3) != 2) {
-				return "Erro: valor decimal da compra deve possuir 2 posições após a virgula.";
+				throw new \Exception("Erro: valor decimal da compra deve possuir 2 posições após a virgula.");
 			}
 
 			$paramString3 = substr($paramString3, 0, strlen($paramString3) - 3) . $str3;
 		} else {
 			if (!is_numeric($paramString3)) {
-				return "Erro: valor da compra não é numérico.";
+				throw new \Exception("Erro: valor da compra não é numérico.");
 			}
 
 			if (strlen($paramString3) > 8) {
-				return "Erro: valor da compra deve possuir no máximo 8 posições antes da virgula.";
+				throw new \Exception("Erro: valor da compra deve possuir no máximo 8 posições antes da virgula.");
 			}
 
 			$paramString3 = $paramString3 . "00";
@@ -215,31 +215,31 @@ class ItauCripto
 		$paramString7 = trim($paramString7);
 
 		if (($paramString7 != "02") && ($paramString7 != "01") && ($paramString7 != "")) {
-			return "Erro: código de inscrição inválido.";
+			throw new \Exception("Erro: código de inscrição inválido.");
 		}
 
 		if (($paramString8 != "") && (!is_numeric($paramString8)) && (strlen($paramString8) > 14)) {
-			return "Erro: número de inscrição inválido.";
+			throw new \Exception("Erro: número de inscrição inválido.");
 		}
 
 		if (($paramString11 != "") && ((!is_numeric($paramString11)) || (strlen($paramString11) != 8))) {
-			return "Erro: cep inválido.";
+			throw new \Exception("Erro: cep inválido.");
 		}
 
 		if (($paramString14 != "") && ((!is_numeric($paramString14)) || (strlen($paramString14) != 8))) {
-			return "Erro: data de vencimento inválida.";
+			throw new \Exception("Erro: data de vencimento inválida.");
 		}
 
 		if (strlen($paramString16) > 60) {
-			return "Erro: observação adicional 1 inválida.";
+			throw new \Exception("Erro: observação adicional 1 inválida.");
 		}
 
 		if (strlen($paramString17) > 60) {
-			return "Erro: observação adicional 2 inválida.";
+			throw new \Exception("Erro: observação adicional 2 inválida.");
 		}
 
 		if (strlen($paramString18) > 60) {
-			return "Erro: observação adicional 3 inválida.";
+			throw new \Exception("Erro: observação adicional 3 inválida.");
 		}
 
 		//Retira os acentos
@@ -277,17 +277,17 @@ class ItauCripto
 	public function geraCripto($paramString1, $paramString2, $paramString3)
 	{
 		if (strlen($paramString1) != $this->TAM_COD_EMP) {
-			return "Erro: tamanho do codigo da empresa diferente de 26 posições.";
+			throw new \Exception("Erro: tamanho do codigo da empresa diferente de 26 posições.");
 		}
 
 		if (strlen($paramString3) != $this->TAM_CHAVE) {
-			return "Erro: tamanho da chave da chave diferente de 16 posições.";
+			throw new \Exception("Erro: tamanho da chave da chave diferente de 16 posições.");
 		}
 
 		$paramString2 = trim($paramString2);
 
 		if ($paramString2 == "") {
-			return "Erro: código do sacado inválido.";
+			throw new \Exception("Erro: código do sacado inválido.");
 		}
 
 		$str1 = $this->Algoritmo($paramString2, $paramString3);
@@ -300,25 +300,25 @@ class ItauCripto
 	public function geraConsulta($paramString1, $paramString2, $paramString3, $paramString4)
 	{
 		if (strlen($paramString1) != $this->TAM_COD_EMP) {
-			return "Erro: tamanho do codigo da empresa diferente de 26 posições.";
+			throw new \Exception("Erro: tamanho do codigo da empresa diferente de 26 posições.");
 		}
 
 		if (strlen($paramString4) != $this->TAM_CHAVE) {
-			return "Erro: tamanho da chave da chave diferente de 16 posições.";
+			throw new \Exception("Erro: tamanho da chave da chave diferente de 16 posições.");
 		}
 
 		if ((strlen($paramString2) < 1) || (strlen($paramString2) > 8)) {
-			return "Erro: número do pedido inválido.";
+			throw new \Exception("Erro: número do pedido inválido.");
 		}
 
 		if (is_numeric($paramString2)) {
 			$paramString2 = $this->PreencheZero($paramString2, 8);
 		} else {
-			return "Erro: numero do pedido não é numérico.";
+			throw new \Exception("Erro: numero do pedido não é numérico.");
 		}
 
 		if (($paramString3 != "0") && ($paramString3 != "1")) {
-			return "Erro: formato inválido.";
+			throw new \Exception("Erro: formato inválido.");
 		}
 
 		$str1 = $this->Algoritmo($paramString2 . $paramString3, $paramString4);
@@ -329,8 +329,7 @@ class ItauCripto
 	}
 
 	//$dados, $chave
-	public function decripto($paramString1, $paramString2)
-	{
+	public function decripto($paramString1, $paramString2) {
 		//A chave precisa sempre estar em maiusculo
 		$paramString2 = strtoupper($paramString2);
 
@@ -347,39 +346,33 @@ class ItauCripto
 		return $str;
 	}
 
-	public function retornaCodEmp()
-	{
+	public function retornaCodEmp() {
 		return $this->codEmp;
 	}
 
-	public function retornaPedido()
-	{
+	public function retornaPedido() {
 		return $this->numPed;
 	}
 
-	public function retornaTipPag()
-	{
+	public function retornaTipPag() {
 		return $this->tipPag;
 	}
 
-	public function geraDadosGenerico($paramString1, $paramString2, $paramString3)
-	{
+	public function geraDadosGenerico($paramString1, $paramString2, $paramString3) {
+		
 		$paramString1 = strtoupper($paramString1);
 		$paramString3 = strtoupper($paramString3);
 
-		if (strlen($paramString1) != $this->TAM_COD_EMP)
-		{
-			return "Erro: tamanho do codigo da empresa diferente de 26 posições.";
+		if (strlen($paramString1) != $this->TAM_COD_EMP) {
+			throw new \Exception("Erro: tamanho do codigo da empresa diferente de 26 posições.");
 		}
 
-		if (strlen($paramString3) != $this->TAM_CHAVE)
-		{
-			return "Erro: tamanho da chave da chave diferente de 16 posições.";
+		if (strlen($paramString3) != $this->TAM_CHAVE) {
+			throw new \Exception("Erro: tamanho da chave da chave diferente de 16 posições.");
 		}
 
-		if (strlen($paramString2) < 1)
-		{
-			return "Erro: sem dados.";
+		if (strlen($paramString2) < 1) {
+			throw new \Exception("Erro: sem dados.");
 		}
 
 		$str1 = $this->Algoritmo($paramString2, $paramString3);
@@ -387,6 +380,7 @@ class ItauCripto
 		$str2 = $this->Algoritmo($paramString1 . $str1, $this->CHAVE_ITAU);
 
 		return $this->Converte($str2);
+		
 	}
 	
 }
