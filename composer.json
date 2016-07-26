@@ -1,7 +1,9 @@
 {
     "name": "dilneiss/itaubankline",
     "description": "Modulo de integracao com o Itau Bankline para emissao de boletos",
+    "keywords": ["itau", "cripto", "bank", "bankline", "php", "composer"],
     "type": "library",
+    "license": ["MIT"],
     "authors": [
         {
             "name": "Dilnei Soethe Spancerski",
