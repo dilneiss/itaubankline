@@ -5,7 +5,7 @@ Versão em PHP da classe Itaucripto, originalmente escrita em Java baseado em gab
 
 O nome dos métodos foi mantido seguindo o padrão Java, apenas para evitar confusões.
 
-Nessa classe apenas implementamos o uso pelo Composer.
+Nessa classe apenas implementamos o uso pelo Composer e uso de excessões em caso de erro nos dados.
 
 Como a classe em Java foi descompilada, alguns nomes se tornaram nomes genéricos (ex: $paramString1, $paramString2).
 
@@ -47,9 +47,14 @@ Após o cliente preencher os dados, criptografe eles utilizando o seguinte código
   $obsAd2 = "";
   $obsAd3 = "";
   
-  $dados_criptografados = $cripto->geraDados($codEmp,$pedido,$valor,$observacao,$chave,$nomeSacado,
-      $codigoInscricao,$numeroInscricao,$enderecoSacado,$bairroSacado,$cepSacado,$cidadeSacado,$estadoSacado,
-      $dataVencimento,$urlRetorna,$obsAd1,$obsAd2,$obsAd3);
+	try {
+	  $dados_criptografados = $cripto->geraDados($codEmp,$pedido,$valor,$observacao,$chave,$nomeSacado,
+	      $codigoInscricao,$numeroInscricao,$enderecoSacado,$bairroSacado,$cepSacado,$cidadeSacado,$estadoSacado,
+	      $dataVencimento,$urlRetorna,$obsAd1,$obsAd2,$obsAd3);
+	} catch (Exception $e) {
+		exit($e->getMessage());
+	}
+  
 ```
 
 Campos
