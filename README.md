@@ -11,6 +11,7 @@ Como a classe em Java foi descompilada, alguns nomes se tornaram nomes genéricos
 
 Instalação
 ==============
+```php
 composer require dilneiss/itaubankline
 
 Como Usar
