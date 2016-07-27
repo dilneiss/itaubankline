@@ -82,8 +82,6 @@ Campos
 Author
 ==============
 
-[R3C Web](http://www.r3c.com.br)
-
 [@dilneiss88](http://twitter.com/dilneiss88)
 
 Licença
