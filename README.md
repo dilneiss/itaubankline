@@ -67,6 +67,17 @@ Para gerar o boleto diretamente sem acessar a tela do Itau Bankline, utilize a u
 	$url = "https://shopline.itau.com.br/shopline/Itaubloqueto.asp?DC=$dados_criptografados";
 ```
 
+Para criptografar os dados para consulta do status do pedido, criptografe os dados do pedido usando o seguinte código.
+```php
+	$metodoResultado = 1; //0 Para exibir a consulta em html legível e 1 para exibir a consulta em xml
+	$dadosCriptografados = $itauCripto->geraConsulta($codEmp , $pedido , $metodoResultado , $chave);
+```
+
+Para exibir o resultado da consulta do status do pedido, utilize a url abaixo.
+```php
+	$url = "https://shopline.itau.com.br/shopline/consulta.aspx?DC=$dados_criptografados";
+```
+
 
 Campos
 ==============
