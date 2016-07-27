@@ -335,6 +335,14 @@ class ItauCripto
 		return $this->Converte($str2);
 	}
 
+	/**
+	 * 
+	 * @param string $paramString1 Código da Empresa
+	 * @param string $paramString2 Número do pedido
+	 * @param string $paramString3 Método de consulta, 0 para exibir html e 1 para exibir xml
+	 * @param string $paramString4 Chave de criptografia
+	 * @throws \Exception
+	 */
 	public function geraConsulta($paramString1, $paramString2, $paramString3, $paramString4) {
 		
 		if (strlen($paramString1) != $this->TAM_COD_EMP) {
@@ -356,7 +364,7 @@ class ItauCripto
 		}
 
 		if (($paramString3 != "0") && ($paramString3 != "1")) {
-			throw new \Exception("Erro: formato inválido.");
+			throw new \Exception("Erro: formato de consulta inválido.");
 		}
 
 		$str1 = $this->Algoritmo($paramString2 . $paramString3, $paramString4);
