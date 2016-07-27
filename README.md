@@ -57,6 +57,17 @@ Após o cliente preencher os dados, criptografe eles utilizando o seguinte código
   
 ```
 
+Caso queira redirecionar o cliente para a tela do Itau Bankline e selecionar a opção de pagamento desejada, utilize a url abaixo.
+```php
+	$url = "https://shopline.itau.com.br/shopline/shopline.aspx?DC=$dados_criptografados";
+```
+
+Para gerar o boleto diretamente sem acessar a tela do Itau Bankline, utilize a url abaixo.
+```php
+	$url = "https://shopline.itau.com.br/shopline/Itaubloqueto.asp?DC=$dados_criptografados";
+```
+
+
 Campos
 ==============
 
