@@ -1,6 +1,11 @@
 <?php
 namespace ItauBankline;
 
+/**
+ * 
+ * @author Dilnei
+ *
+ */
 class ItauCripto
 {
 	
@@ -95,8 +100,41 @@ class ItauCripto
 	}
 	
 	//Retira as letras acentuadas e substitui pelas não acentuadas
-	private function TiraAcento($str) {
-		return strtr(utf8_decode($str),utf8_decode('ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ'),'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy');
+	private function TiraAcento($string) {
+		
+		$alnumPattern = '/^[a-zA-Z0-9 ]+$/';
+		
+		if (preg_match($alnumPattern, $string)) {
+			return $string;
+		}
+		
+		$ret = array_map(
+				function ($chr) use ($alnumPattern, $replacement) {
+					if (preg_match($alnumPattern, $chr)) {
+						return $chr;
+					} else {
+						$chr = @iconv('ISO-8859-1', 'ASCII//TRANSLIT', $chr);
+						if (strlen($chr) == 1) {
+							return $chr;
+						} elseif (strlen($chr) > 1) {
+							$ret = '';
+							foreach (str_split($chr) as $char2) {
+								if (preg_match($alnumPattern, $char2)) {
+									$ret .= $char2;
+								}
+							}
+							return $ret;
+						} else {
+							// replace whatever iconv fail to convert by something else
+							return $replacement;
+						}
+					}
+				},
+				str_split($string)
+				);
+		
+		return implode($ret);
+		
 	}
 	
 	private function Converte($paramString) {
@@ -157,8 +195,8 @@ class ItauCripto
 	  
 	  $dados = $cripto->geraDados($codEmp,$pedido,$valor,$observacao,$chave,$nomeSacado,$codigoInscricao,$numeroInscricao,$enderecoSacado,$bairroSacado,$cepSacado,$cidadeSacado,$estadoSacado,$dataVencimento,$urlRetorna,$obsAd1,$obsAd2,$obsAd3);
 	 */
-	public function geraDados($paramString1, $paramString2, $paramString3, $paramString4, $paramString5, $paramString6, $paramString7, $paramString8, $paramString9, $paramString10, $paramString11, $paramString12, $paramString13, $paramString14, $paramString15, $paramString16, $paramString17, $paramString18)
-	{
+	public function geraDados($paramString1, $paramString2, $paramString3, $paramString4, $paramString5, $paramString6, $paramString7, $paramString8, $paramString9, $paramString10, $paramString11, $paramString12, $paramString13, $paramString14, $paramString15, $paramString16, $paramString17, $paramString18) {
+		
 		$paramString1 = strtoupper($paramString1);
 		$paramString5 = strtoupper($paramString5);
 
@@ -274,8 +312,8 @@ class ItauCripto
 		return $this->Converte($str2);
 	}
 
-	public function geraCripto($paramString1, $paramString2, $paramString3)
-	{
+	public function geraCripto($paramString1, $paramString2, $paramString3) {
+		
 		if (strlen($paramString1) != $this->TAM_COD_EMP) {
 			throw new \Exception("Erro: tamanho do codigo da empresa diferente de 26 posições.");
 		}
@@ -297,8 +335,8 @@ class ItauCripto
 		return $this->Converte($str2);
 	}
 
-	public function geraConsulta($paramString1, $paramString2, $paramString3, $paramString4)
-	{
+	public function geraConsulta($paramString1, $paramString2, $paramString3, $paramString4) {
+		
 		if (strlen($paramString1) != $this->TAM_COD_EMP) {
 			throw new \Exception("Erro: tamanho do codigo da empresa diferente de 26 posições.");
 		}
