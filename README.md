@@ -1,13 +1,15 @@
 PHP ITAUCRIPTO Itau Bankline
 ==============
 
-Versão em PHP da classe Itaucripto, originalmente escrita em Java baseado em gabrielrcouto/php-itaucripto.
+Versão em PHP com a classe ItauCripto, originalmente escrita em Java baseado em gabrielrcouto/php-itaucripto.
 
-O nome dos métodos foi mantido seguindo o padrão Java, apenas para evitar confusões.
+Implementamos na mesma biblioteca as chamadas Webservice para geração de transação no Itau Bankline e também consultas.
 
-Nessa classe apenas implementamos o uso pelo Composer e uso de excessões em caso de erro nos dados.
+Nossa biblioteca foi desenvolvida inicialmente para utilizar apenas o Boleto bancário, mas nada impede de usar as outras formas de pagamento.
 
-Como a classe em Java foi descompilada, alguns nomes se tornaram nomes genéricos (ex: $paramString1, $paramString2).
+Caso queira contribuir com as outras formas de pagamento, será muito bem vindo também.
+
+Como a classe ItauCripto em Java foi descompilada, alguns nomes se tornaram nomes genéricos (ex: $paramString1, $paramString2).
 
 Instalação
 ==============
@@ -15,69 +17,74 @@ Instalação
 composer require dilneiss/itaubankline
 ```
 
-Como Usar
+Como usar o Webservice utilizando a própria Biblioteca
 ==============
-
-Após o cliente preencher os dados, criptografe eles utilizando o seguinte código:
-
+Para gerar uma url para o cliente efetuar o pagamento, utilize o seguinte código
 ```php
-  $cripto = new ItauCripto();
-  
-  //Coloque o código da empresa em MAIÚSCULO
-  $codEmp = "J1234567890123456789012345";
-  //Coloque a chave de criptografia em MAIÚSCULO
-  $chave = "ABCD123456ABCD12";
-  
-  //Preencha as variáveis abaixo com os dados do cliente e da cobrança
-  //Abaixo é só um exemplo!
-  $pedido = "1234";
-  $valor = "150,00";
-  $observacao = "";
-  $nomeSacado = "José Pereira";
-  $codigoInscricao = "";
-  $numeroInscricao = "";
-  $enderecoSacado = "";
-  $bairroSacado = "";
-  $cepSacado = "";
-  $cidadeSacado = "";
-  $estadoSacado = "";
-  $dataVencimento = "";
-  $urlRetorna = "";
-  $obsAd1 = "";
-  $obsAd2 = "";
-  $obsAd3 = "";
-  
 	try {
-	  $dados_criptografados = $cripto->geraDados($codEmp,$pedido,$valor,$observacao,$chave,$nomeSacado,
-	      $codigoInscricao,$numeroInscricao,$enderecoSacado,$bairroSacado,$cepSacado,$cidadeSacado,$estadoSacado,
-	      $dataVencimento,$urlRetorna,$obsAd1,$obsAd2,$obsAd3);
+			
+		  //Coloque o código da empresa em MAIÚSCULO
+		  $codEmp = "J1234567890123456789012345";
+		  //Coloque a chave de criptografia em MAIÚSCULO
+		  $chave = "ABCD123456ABCD12";
+		  
+		  //Preencha as variáveis abaixo com os dados do cliente e da cobrança
+		  //Abaixo é só um exemplo!
+		  $pedido = "1234";
+		  $valor = "150,00";
+		  $observacao = 1;
+		  $nomeSacado = "Dilnei Soethe Spancerski";
+		  $codigoInscricao = "";
+		  $numeroInscricao = "";
+		  $enderecoSacado = "";
+		  $bairroSacado = "";
+		  $cepSacado = "";
+		  $cidadeSacado = "";
+		  $estadoSacado = "";
+		  $dataVencimento = "";
+		  $urlRetorna = "";
+		  $obsAd1 = "Observações linha 1";
+		  $obsAd2 = "Observações linha 2";
+		  $obsAd3 = "Observações linha 3";
+		  
+		  $itauCripto = new ItauCripto();
+		  
+		  $dados_criptografados = $itauCripto->geraDados($codEmp,$pedido,$valor,$observacao,$chave,$nomeSacado,$codigoInscricao,
+		  													$numeroInscricao,$enderecoSacado,$bairroSacado,$cepSacado,$cidadeSacado,$estadoSacado,
+													      $dataVencimento,$urlRetorna,$obsAd1,$obsAd2,$obsAd3);
+													      
+		  $itauService = new ItauBanklineService();
+		  
+		  $urlBoleto = $itauService->generateUrlBoletoItauBankline($dados_criptografados); //Utilize essa url para ir direto ao boleto bancário
+		  
+		  $urlItauBankline = $itauService->generateUrlBoletoItauBankline($dados_criptografados); //Utilize essa url para ir a tela do Itau Bankline e o cliente escolher a forma de pagamento
+		  
+		  //Aqui faça seu redirecionamento para a url gerada conforme desejado
+			
+		} catch (Exception $e) {
+			exit($e->getMessage());
+		}
+```
+
+Para efetuar uma consulta no Itau Bankline e retornar o status da transação, utilize o seguinte código
+```php
+	$metodoResultado = 1; //0 Para exibir a consulta em html legível e 1 para exibir a consulta em xml
+	
+	$itauCripto = new ItauCripto();
+	$dadosCriptografados = $itauCripto->geraConsulta($codEmp , $pedido , $metodoResultado , $chave);
+		
+	try {
+	
+		$itauService = new ItauBanklineService();
+		
+		$transacao = $itauService->consultaTransacao($dadosCriptografados);
+		
+		var_dump($transacao);
+		
 	} catch (Exception $e) {
 		exit($e->getMessage());
 	}
-  
 ```
-
-Caso queira redirecionar o cliente para a tela do Itau Bankline e selecionar a opção de pagamento desejada, utilize a url abaixo.
-```php
-	$url = "https://shopline.itau.com.br/shopline/shopline.aspx?DC=$dados_criptografados";
-```
-
-Para gerar o boleto diretamente sem acessar a tela do Itau Bankline, utilize a url abaixo.
-```php
-	$url = "https://shopline.itau.com.br/shopline/Itaubloqueto.asp?DC=$dados_criptografados";
-```
-
-Para criptografar os dados para consulta do status do pedido, criptografe os dados do pedido usando o seguinte código.
-```php
-	$metodoResultado = 1; //0 Para exibir a consulta em html legível e 1 para exibir a consulta em xml
-	$dadosCriptografados = $itauCripto->geraConsulta($codEmp , $pedido , $metodoResultado , $chave);
-```
-
-Para exibir o resultado da consulta do status do pedido, utilize a url abaixo.
-```php
-	$url = "https://shopline.itau.com.br/shopline/consulta.aspx?DC=$dados_criptografados";
-```
-
 
 Campos
 ==============
