@@ -102,38 +102,7 @@ class ItauCripto
 	//Retira as letras acentuadas e substitui pelas não acentuadas
 	private function TiraAcento($string) {
 		
-		$alnumPattern = '/^[a-zA-Z0-9 ]+$/';
-		
-		if (preg_match($alnumPattern, $string)) {
-			return $string;
-		}
-		
-		$ret = array_map(
-				function ($chr) use ($alnumPattern, $replacement) {
-					if (preg_match($alnumPattern, $chr)) {
-						return $chr;
-					} else {
-						$chr = @iconv('ISO-8859-1', 'ASCII//TRANSLIT', $chr);
-						if (strlen($chr) == 1) {
-							return $chr;
-						} elseif (strlen($chr) > 1) {
-							$ret = '';
-							foreach (str_split($chr) as $char2) {
-								if (preg_match($alnumPattern, $char2)) {
-									$ret .= $char2;
-								}
-							}
-							return $ret;
-						} else {
-							// replace whatever iconv fail to convert by something else
-							return $replacement;
-						}
-					}
-				},
-				str_split($string)
-				);
-		
-		return implode($ret);
+		return preg_replace("/[^a-zA-Z0-9_.]/", " ", strtr($string, "áàãâéêíóôõúüçÁÀÃÂÉÊÍÓÔÕÚÜÇ", "aaaaeeiooouucAAAAEEIOOOUUC"));
 		
 	}
 	
@@ -289,7 +258,7 @@ class ItauCripto
 		$paramString16 = $this->TiraAcento($paramString16);
 		$paramString17 = $this->TiraAcento($paramString17);
 		$paramString18 = $this->TiraAcento($paramString18);
-
+		
 		$paramString4 = $this->PreencheBranco($paramString4, 40);
 		$paramString6 = $this->PreencheBranco($paramString6, 30);
 		$paramString7 = $this->PreencheBranco($paramString7, 2);
@@ -304,7 +273,7 @@ class ItauCripto
 		$paramString16 = $this->PreencheBranco($paramString16, 60);
 		$paramString17 = $this->PreencheBranco($paramString17, 60);
 		$paramString18 = $this->PreencheBranco($paramString18, 60);
-
+		
 		$str1 = $this->Algoritmo($paramString2 . $paramString3 . $paramString4 . $paramString6 . $paramString7 . $paramString8 . $paramString9 . $paramString10 . $paramString11 . $paramString12 . $paramString13 . $paramString14 . $paramString15 . $paramString16 . $paramString17 . $paramString18, $paramString5);
 
 		$str2 = $this->Algoritmo($paramString1 . $str1, $this->CHAVE_ITAU);
