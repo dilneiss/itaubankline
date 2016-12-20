@@ -15,8 +15,8 @@ if (!$included) {
 
 // ItauBankline
 
-$codEmp = 'J0043497660001370000012814';
-$chave = 'MESACORTRA243101';
+$codEmp = '???';
+$chave = '???';
 $pedido = '45000034';
 $metodoResultado = 1;
 
