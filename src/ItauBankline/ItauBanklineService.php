@@ -6,15 +6,15 @@ use ItauBankline\Model\ConsultaTransacaoItauBanklineModel;
 class ItauBanklineService
 {
 	
-	//Geração de transação
+	//GeraÃ§Ã£o de transaÃ§Ã£o
 	const URL_REQUISICAO_ITAU_BANKLINE 		= 'https://shopline.itau.com.br/shopline/shopline.aspx?DC=';
 	const URL_REQUISICAO_BOLETO_BANCARIO 	= 'https://shopline.itau.com.br/shopline/Itaubloqueto.asp?DC=';
 
-	//Consulta de Transações
+	//Consulta de TransaÃ§Ãµes
 	const URL_CONSULTA_TRANSACOES 			= 'https://shopline.itau.com.br/shopline/consulta.aspx?DC=';
 	
 	/**
-	 * Gerando a url para o usuário entrar na tela do Itau Bankline
+	 * Gerando a url para o usuÃ¡rio entrar na tela do Itau Bankline
 	 * @param string $dadosCriptografados
 	 */
 	public function generateUrlItauBankline($dadosCriptografados){
@@ -22,7 +22,7 @@ class ItauBanklineService
 	}
 	
 	/**
-	 * Gerando a url para o usuário entrar diretamente no boleto bancário sem passar pela tela do Itau Bankline
+	 * Gerando a url para o usuÃ¡rio entrar diretamente no boleto bancÃ¡rio sem passar pela tela do Itau Bankline
 	 * @param string $dadosCriptografados
 	 */
 	public function generateUrlBoletoItauBankline($dadosCriptografados){
@@ -46,7 +46,7 @@ class ItauBanklineService
 	}
 	
 	/**
-	 * Convertendo o resultado em XML para um objeto único
+	 * Convertendo o resultado em XML para um objeto Ãºnico
 	 * @param string $body
 	 * @return ConsultaTransacaoModel
 	 */
@@ -59,7 +59,7 @@ class ItauBanklineService
 		
 		foreach ($array['PARAMETER']['PARAM'] as $param){
 			
-			$consultaTransacaoModel->$param['@attributes']['ID'] = $param['@attributes']['VALUE'];
+			$consultaTransacaoModel->{$param['@attributes']['ID']} = $param['@attributes']['VALUE'];
 			
 		}
 		
