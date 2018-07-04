@@ -8,7 +8,7 @@ class ItauBanklineService
 	
 	//Geração de transação
 	const URL_REQUISICAO_ITAU_BANKLINE 		= 'https://shopline.itau.com.br/shopline/shopline.aspx?DC=';
-	const URL_REQUISICAO_BOLETO_BANCARIO 	= 'https://shopline.itau.com.br/shopline/Itaubloqueto.asp?DC=';
+	const URL_REQUISICAO_BOLETO_BANCARIO 	= 'https://shopline.itau.com.br/shopline/impressao.aspx?DC=';
 
 	//Consulta de Transações
 	const URL_CONSULTA_TRANSACOES 			= 'https://shopline.itau.com.br/shopline/consulta.aspx?DC=';
